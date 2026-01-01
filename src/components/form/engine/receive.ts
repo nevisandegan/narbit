@@ -7,6 +7,7 @@ export const calculateReceive = (
 ) => {
   const fee = calculateFee(side, amount, total);
 
+
   if (side === "BUY") {
     return typeof amount === "number" ? amount - fee : 0;
   }

@@ -5,6 +5,7 @@ export const calculateFee = (
   amount?: number,
   total?: number
 ) => {
+
   if (side === "BUY") {
     return typeof amount === "number" ? amount * FEE_RATE : 0;
   }

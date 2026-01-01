@@ -111,7 +111,7 @@ const VoteBar = () => {
       >
         <div
           className={twMerge(
-            "absolute right-0 flex h-full w-[calc(100%-16px)] items-center justify-center gap-1 rounded-r-full",
+            "absolute right-[0.3px] flex h-full w-[calc(100%-16px)] items-center justify-center gap-1 rounded-r-full",
             upVoteClasses.base,
             upVoteClasses.borderMain
           )}

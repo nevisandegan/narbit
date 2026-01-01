@@ -1,16 +1,15 @@
-import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 import { useCallback, useState } from "react";
+import { useForm } from "react-hook-form";
 import { calculateNextValues } from "../engine/calculate-next";
-import type { OrderSide, Field, OrderValues } from "../engine/types";
+import type { Field, OrderSide, OrderValues } from "../engine/types";
+import { validation, defaultValues } from "./schema";
 
 export function useOrderForm() {
   const form = useForm<OrderValues>({
-    mode: "onChange",
-    defaultValues: {
-      price: undefined,
-      amount: undefined,
-      total: undefined,
-    },
+    mode: "onSubmit",
+    resolver: yupResolver(validation),
+    defaultValues,
   });
 
   const { setValue, getValues } = form;
@@ -19,7 +18,6 @@ export function useOrderForm() {
   const [lastUpdatedField, setLastUpdatedField] = useState<
     Field | "slider" | null
   >(null);
-  const [sliderPercent, setSliderPercent] = useState<number>(0);
 
   const applyIntent = useCallback(
     (field: Field | "slider") => {
@@ -30,6 +28,7 @@ export function useOrderForm() {
       const next = calculateNextValues(values, {
         side,
         lastUpdatedField: field,
+        sliderPercent: field === "slider" ? values.slider : undefined,
       });
 
       (Object.entries(next) as [Field, number][]).forEach(([key, value]) => {
@@ -43,36 +42,10 @@ export function useOrderForm() {
     [getValues, setValue, side]
   );
 
-  const applySlider = useCallback(
-    (percent: number) => {
-      setSliderPercent(percent);
-      setLastUpdatedField("slider");
-
-      const values = getValues();
-
-      if (side === "BUY") {
-        const maxTotal = 100;
-        const total = (percent / 100) * maxTotal;
-        setValue("total", total, { shouldDirty: true });
-        applyIntent("slider");
-      }
-
-      if (side === "SELL") {
-        const maxAmount = 1;
-        const amount = (percent / 100) * maxAmount;
-        setValue("amount", amount, { shouldDirty: true });
-        applyIntent("slider");
-      }
-    },
-    [applyIntent, getValues, setValue, side]
-  );
-
   return {
     form,
     side,
     setSide,
     applyIntent,
-    sliderPercent,
-    applySlider
   };
 }
