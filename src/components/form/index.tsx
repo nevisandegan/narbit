@@ -6,10 +6,11 @@ import { useOrderForm } from "./order-form/useOrderForm";
 import { DECIMALS, FEE_RATE, MOCK_BALANCE } from "./order-form/config";
 import { checkBalance } from "./engine/balance";
 import { useWatch } from "react-hook-form";
+import { sanitizeInput } from "../../utils/number-input";
 
 const OrderForm: React.FC = () => {
   const { form, side, setSide, applyIntent } = useOrderForm();
-  const { control, handleSubmit, watch, formState } = form;
+  const { control, handleSubmit, formState } = form;
 
   const onSubmit = (data: any) => {
     console.log("submit:", data);
@@ -65,13 +66,10 @@ const OrderForm: React.FC = () => {
                 type="text"
                 placeholder="قیمت واحد را وارد کنید"
                 onChange={(e) => {
-                  const value = e.target.value;
-                  const regex = new RegExp(
-                    `^(\\d+)(\\.\\d{0,${DECIMALS.USDT}})?`
-                  );
-                  const match = value.match(regex);
-                  e.target.value = match ? match[0] : "";
-                  field.onChange(e.target.value);
+                  let value = e.target.value;
+                  value = sanitizeInput(value, DECIMALS.USDT);
+                  e.target.value = value;
+                  field.onChange(value);
                   applyIntent("price");
                 }}
                 className="border p-2 w-full rounded"
@@ -96,13 +94,10 @@ const OrderForm: React.FC = () => {
                 type="text"
                 placeholder="مقدار را وارد کنید"
                 onChange={(e) => {
-                  const value = e.target.value;
-                  const regex = new RegExp(
-                    `^(\\d+)(\\.\\d{0,${DECIMALS.BTC}})?`
-                  );
-                  const match = value.match(regex);
-                  e.target.value = match ? match[0] : "";
-                  field.onChange(e.target.value);
+                  let value = e.target.value;
+                  value = sanitizeInput(value, DECIMALS.BTC);
+                  e.target.value = value;
+                  field.onChange(value);
                   applyIntent("amount");
                 }}
                 className="border p-2 w-full rounded"
@@ -150,14 +145,10 @@ const OrderForm: React.FC = () => {
                 type="text"
                 placeholder="مبلغ کل سفارش"
                 onChange={(e) => {
-                  const value = e.target.value;
-                  const regex = new RegExp(
-                    `^(\\d+)(\\.\\d{0,${DECIMALS.USDT}})?`
-                  );
-                  const match = value.match(regex);
-
-                  e.target.value = match ? match[0] : "";
-                  field.onChange(e.target.value);
+                  let value = e.target.value;
+                  value = sanitizeInput(value, DECIMALS.USDT);
+                  e.target.value = value;
+                  field.onChange(value);
                   applyIntent("total");
                 }}
                 className="border p-2 w-full rounded"
