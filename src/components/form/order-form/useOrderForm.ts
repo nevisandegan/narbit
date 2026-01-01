@@ -2,7 +2,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
 import { calculateNextValues } from "../engine/calculate-next";
-import type { Field, OrderSide, OrderValues } from "../engine/types";
+import type { Field, OrderSide, OrderValues } from "../types/types";
 import { validation, defaultValues } from "./schema";
 
 export function useOrderForm() {

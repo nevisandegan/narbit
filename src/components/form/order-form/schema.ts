@@ -1,6 +1,6 @@
 import * as yup from "yup";
 import { DECIMALS } from "./config";
-import type { OrderValues } from "../engine/types";
+import type { OrderValues } from "../types/types";
 
 export const defaultValues = {
     price: undefined,

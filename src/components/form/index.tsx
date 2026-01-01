@@ -6,7 +6,7 @@ import { useOrderForm } from "./order-form/useOrderForm";
 import { DECIMALS, FEE_RATE, MOCK_BALANCE } from "./order-form/config";
 import { checkBalance } from "./engine/balance";
 import { useWatch } from "react-hook-form";
-import { sanitizeInput } from "../../utils/number-input";
+import { sanitizeInput } from "../../utils/sanitize-input";
 
 const OrderForm: React.FC = () => {
   const { form, side, setSide, applyIntent } = useOrderForm();
